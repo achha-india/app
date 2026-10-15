@@ -241,7 +241,7 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
 .btn.main { background: var(--accent); color: var(--accent-ink); }
 .btn.ghost { background: var(--chip); color: var(--ink); }
 .fb-form { display: flex; flex-direction: column; gap: 10px; }
-.fb-label { font-weight: 600; }
+.fb-label { font-size: 15px; color: var(--muted); }
 .fb-form textarea { width: 100%; min-height: 120px; resize: vertical; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 12px; font: inherit; font-size: 16px; }
 .fb-ctx { font-size: 13px; color: var(--muted); }
 .fb-note { margin: 0; font-size: 13px; color: var(--muted); }
@@ -328,13 +328,13 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
   <div class="wrap">
     <div class="grab" aria-hidden="true"></div>
     <div class="sheet-head">
-      <h2 class="h2" id="fb-title">Предложить фразу</h2>
+      <h2 class="h2" id="fb-title">Ачча! А что бы вы добавили?</h2>
       <button class="x" id="fb-close" type="button" aria-label="Закрыть">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
     <form class="fb-form" id="fb-form" novalidate>
-      <label for="fb-text" class="fb-label">Какой фразы не хватило? Или что исправить?</label>
+      <label for="fb-text" class="fb-label">Расскажите, чего не хватило в поездке: фразы, подсказки, ситуации. Или где мы ошиблись. И от благодарностей тоже не откажемся :)</label>
       <textarea id="fb-text" maxlength="1000" rows="5" placeholder="Например: как попросить таксиста включить кондиционер"></textarea>
       <div class="fb-ctx" id="fb-ctx" hidden></div>
       <input type="text" id="fb-hp" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
@@ -530,7 +530,7 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
       h += '</div></div></li>';
     });
     h += '</ol><footer class="about"><p><b>Ачча!</b> — некоммерческий проект, который собирают энтузиасты. Фразы пока проверяются носителями языка.</p>';
-    h += '<button class="link-btn" type="button" data-fb="1">Предложить фразу или исправление</button></footer></div>';
+    h += '<button class="link-btn" type="button" data-fb="1">Написать нам</button></footer></div>';
     return h;
   }
 
@@ -664,7 +664,7 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
 
   // ---------- feedback ----------
   // Адрес веб-приложения Apps Script (Deploy → Web app). Пока пусто — сообщения копятся на телефоне.
-  var FEEDBACK_URL = '';
+  var FEEDBACK_URL = 'https://script.google.com/macros/s/AKfycbxHyT7YdeCFBeytZm4g67koD0Je9alFIilwnhnIAlfGL2r_SQ0AVerWD1h6gbWHzlEw/exec';
   var FB_QUEUE = 'pb-fb-queue';
   var fbContext = '';
   function fbQueue() { try { return JSON.parse(localStorage.getItem(FB_QUEUE) || '[]') || []; } catch (e) { return []; } }
