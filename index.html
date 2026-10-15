@@ -218,7 +218,12 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
   bottom: calc(var(--bar-h) + 20px + env(safe-area-inset-bottom, 0px));
   background: var(--ink); color: var(--bg); border-radius: 12px; padding: 10px 14px; font-size: 14px; max-width: calc(100% - 32px);
 }
-.draft-note { font-size: 12px; color: var(--muted); text-align: center; }
+.intro { display: flex; flex-direction: column; gap: 8px; }
+.intro .lead b { color: var(--ink); font-weight: 600; }
+.about { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+.about p { margin: 0; }
+.about b { color: var(--primary); font-family: var(--font-display); font-weight: 700; }
+.about a { color: var(--primary); font-weight: 600; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
@@ -393,7 +398,8 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
 
   // ---------- views ----------
   function viewRoute() {
-    var h = '<div class="view"><p class="lead">Пройдите маршрут дома, чтобы выучить фразы заранее. В поездке откройте нужную ситуацию или найдите фразу поиском.</p>';
+    var h = '<div class="view"><div class="intro"><p class="lead"><b>Карманный разговорник для поездки в Индию.</b> Здесь есть не только то, что сказать, но и то, что вам ответят: индийский английский поначалу бывает непривычным.</p>';
+    h += '<p class="lead">Пройдите маршрут дома, чтобы выучить фразы заранее. В поездке откройте нужную ситуацию или найдите фразу поиском. Приложение работает без интернета.</p></div>';
     h += '<ol class="route">';
     route.forEach(function (st, si) {
       h += '<li class="stop"><div class="rail"><span class="dot">' + (si + 1) + '</span></div><div class="stop-body">';
@@ -404,7 +410,8 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
       });
       h += '</div></div></li>';
     });
-    h += '</ol><p class="draft-note">Фразы пока проверяются носителями языка.</p></div>';
+    h += '</ol><footer class="about"><p><b>Ачча!</b> — открытый некоммерческий проект, который собирают энтузиасты. Фразы пока проверяются носителями языка.</p>';
+    h += '</footer></div>';
     return h;
   }
 
