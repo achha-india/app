@@ -456,7 +456,24 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
     var en = voices.filter(function (v) { return v.lang && v.lang.toLowerCase().indexOf('en') === 0; });
     return en[0] || null;
   }
+  // Сначала записанный индийский голос (audio/<id>.mp3), если файла нет — голос телефона.
+  var player = null;
   function speak(line) {
+    try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {}
+    try {
+      if (!player) player = new Audio();
+      player.pause();
+      player.onerror = null;
+      var src = 'audio/' + line.id + '.mp3';
+      var done = false;
+      var fallback = function () { if (done) return; done = true; speakTTS(line); };
+      player.onerror = fallback;
+      player.src = src;
+      var p = player.play();
+      if (p && p.catch) p.catch(function (err) { if (!err || err.name !== 'AbortError') fallback(); });
+    } catch (e) { speakTTS(line); }
+  }
+  function speakTTS(line) {
     if (!('speechSynthesis' in window)) { toast('Озвучка недоступна в этом браузере'); return; }
     try {
       speechSynthesis.cancel();

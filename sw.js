@@ -1,6 +1,6 @@
 // Ачча — Service Worker: сохраняет приложение, фразы и шрифты на телефоне, чтобы всё работало без интернета.
 // При изменении файлов приложения увеличьте номер версии, чтобы телефоны скачали обновление.
-const VERSION = 'achha-v9';
+const VERSION = 'achha-v10';
 const APP_CACHE = VERSION + '-app';
 const FONT_CACHE = 'achha-fonts-v1';
 const FONT_CSS = 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Pliant:wght@500;700&display=swap';
@@ -15,6 +15,22 @@ const APP_FILES = [
   './icons/apple-touch-icon.png',
   './icons/favicon-32.png'
 ];
+
+// Озвучка: берём список фраз и сохраняем audio/<id>.mp3 для каждой (около 1 МБ на все фразы).
+// Если какого-то файла нет, приложение озвучит фразу голосом телефона.
+async function cacheAudio(cache) {
+  try {
+    const res = await cache.match('./phrases.json');
+    if (!res) return;
+    const data = await res.clone().json();
+    const ids = [];
+    (data.stages || []).forEach(s => (s.situations || []).forEach(sit => (sit.lines || []).forEach(l => l.id && ids.push(l.id))));
+    await Promise.all(ids.map(id => {
+      const u = './audio/' + id + '.mp3';
+      return fetch(u, { cache: 'reload' }).then(r => r.ok && cache.put(u, r)).catch(() => {});
+    }));
+  } catch (e) { /* без файлов озвучки работает голос телефона */ }
+}
 
 // Шрифты: сохраняем CSS Google Fonts и все файлы шрифтов из него.
 async function cacheFonts() {
@@ -33,6 +49,7 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(APP_CACHE);
     await cache.addAll(APP_FILES.map(u => new Request(u, { cache: 'reload' })));
+    await cacheAudio(cache);
     await cacheFonts();
     await self.skipWaiting();
   })());
@@ -67,6 +84,40 @@ self.addEventListener('fetch', event => {
   }
 
   if (url.origin !== self.location.origin) return;
+
+  // Озвучка: сначала из памяти телефона. iPhone запрашивает аудио кусками (Range),
+  // поэтому отдаём нужный кусок файла сами.
+  if (url.pathname.includes('/audio/') && url.pathname.endsWith('.mp3')) {
+    event.respondWith((async () => {
+      const cache = await caches.open(APP_CACHE);
+      const key = './audio/' + url.pathname.split('/').pop();
+      let res = await cache.match(key);
+      if (!res) {
+        try {
+          const net = await fetch(url.href);
+          if (!net.ok) return net;
+          await cache.put(key, net.clone());
+          res = net;
+        } catch (e) { return new Response('', { status: 504 }); }
+      }
+      const range = req.headers.get('range');
+      if (!range) return res;
+      const buf = await res.arrayBuffer();
+      const m = /bytes=(\d*)-(\d*)/.exec(range) || [];
+      let start = m[1] ? parseInt(m[1], 10) : 0;
+      let end = m[2] ? parseInt(m[2], 10) : buf.byteLength - 1;
+      if (!m[1] && m[2]) { start = Math.max(0, buf.byteLength - parseInt(m[2], 10)); end = buf.byteLength - 1; }
+      end = Math.min(end, buf.byteLength - 1);
+      if (start > end) return new Response('', { status: 416, headers: { 'Content-Range': 'bytes */' + buf.byteLength } });
+      return new Response(buf.slice(start, end + 1), { status: 206, headers: {
+        'Content-Type': 'audio/mpeg',
+        'Content-Length': String(end - start + 1),
+        'Content-Range': 'bytes ' + start + '-' + end + '/' + buf.byteLength,
+        'Accept-Ranges': 'bytes'
+      } });
+    })());
+    return;
+  }
 
   // Приложение и фразы: при наличии интернета берём свежую версию (ждём до 4 секунд),
   // без сети или при медленной сети показываем сохранённую.
