@@ -1,0 +1,813 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-14T00:00:00Z",
+  "count": 57,
+  "stages": [
+    {
+      "name": "Аэропорт",
+      "situations": [
+        {
+          "name": "Паспортный контроль",
+          "lines": [
+            {
+              "id": "air-01",
+              "order": 1,
+              "role": "local",
+              "replyTo": null,
+              "en": "Passport, please.",
+              "read": "па́спорт, плиз",
+              "ru": "Паспорт, пожалуйста.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-02",
+              "order": 2,
+              "role": "tourist",
+              "replyTo": "air-01",
+              "en": "Here you are.",
+              "read": "хир ю ар",
+              "ru": "Вот, пожалуйста.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-03",
+              "order": 3,
+              "role": "local",
+              "replyTo": "air-02",
+              "en": "Show your e-visa.",
+              "read": "шоу ёр и-ви́за",
+              "ru": "Покажите вашу визу.",
+              "note": "Распечатку визы лучше иметь с собой на бумаге.",
+              "level": "A2",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-04",
+              "order": 4,
+              "role": "local",
+              "replyTo": "air-03",
+              "en": "What is the purpose of your visit?",
+              "read": "уот из зэ пёрпэс оф ёр ви́зит?",
+              "ru": "Какова цель вашего визита?",
+              "note": null,
+              "level": "A2",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-05",
+              "order": 5,
+              "role": "tourist",
+              "replyTo": "air-04",
+              "en": "Tourism. I am here on holiday.",
+              "read": "ту́ризм. ай эм хир он хо́лидэй",
+              "ru": "Туризм. Я в отпуске.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-06",
+              "order": 6,
+              "role": "local",
+              "replyTo": "air-05",
+              "en": "How long will you stay?",
+              "read": "хау лонг уил ю стэй?",
+              "ru": "Сколько вы здесь пробудете?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-07",
+              "order": 7,
+              "role": "tourist",
+              "replyTo": "air-06",
+              "en": "Two weeks.",
+              "read": "ту уикс",
+              "ru": "Две недели.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-08",
+              "order": 8,
+              "role": "local",
+              "replyTo": "air-07",
+              "en": "Where will you stay?",
+              "read": "уэр уил ю стэй?",
+              "ru": "Где вы остановитесь?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-09",
+              "order": 9,
+              "role": "tourist",
+              "replyTo": "air-08",
+              "en": "At a hotel in Goa. Here is the address.",
+              "read": "эт э хотэ́л ин го́а. хир из зэ э́дрэс",
+              "ru": "В отеле в Гоа. Вот адрес.",
+              "note": "Адрес отеля лучше держать в телефоне и на бумаге.",
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-10",
+              "order": 10,
+              "role": "local",
+              "replyTo": "air-09",
+              "en": "Look at the camera, please.",
+              "read": "лук эт зэ кэ́мэра, плиз",
+              "ru": "Посмотрите в камеру, пожалуйста.",
+              "note": "На контроле могут сфотографировать и снять отпечатки пальцев.",
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            }
+          ]
+        },
+        {
+          "name": "Багаж",
+          "lines": [
+            {
+              "id": "air-11",
+              "order": 1,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Where is the baggage claim?",
+              "read": "уэр из зэ бэ́гидж клэйм?",
+              "ru": "Где выдача багажа?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-12",
+              "order": 2,
+              "role": "local",
+              "replyTo": "air-11",
+              "en": "Belt number three.",
+              "read": "бэлт на́мбэр сри",
+              "ru": "Лента номер три.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-13",
+              "order": 3,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "My bag is missing.",
+              "read": "май бэг из ми́синг",
+              "ru": "Мой чемодан не приехал.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "air-14",
+              "order": 4,
+              "role": "local",
+              "replyTo": "air-13",
+              "en": "Please go to the baggage counter and fill the form.",
+              "read": "плиз гоу ту зэ бэ́гидж ка́унтэр энд фил зэ форм",
+              "ru": "Подойдите к стойке багажа и заполните бланк.",
+              "note": "В индийском английском часто говорят fill the form вместо fill in the form.",
+              "level": "A2",
+              "voice": "en-IN",
+              "status": "Черновик"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Дорога",
+      "situations": [
+        {
+          "name": "Такси из аэропорта",
+          "lines": [
+            {
+              "id": "road-01",
+              "order": 1,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "I need a taxi to this address.",
+              "read": "ай нид э тэ́кси ту зис э́дрэс",
+              "ru": "Мне нужно такси по этому адресу.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-02",
+              "order": 2,
+              "role": "local",
+              "replyTo": "road-01",
+              "en": "Prepaid taxi counter is there, sir.",
+              "read": "припэ́йд тэ́кси ка́унтэр из зэр, сёр",
+              "ru": "Стойка предоплаченного такси вон там.",
+              "note": "Sir и madam здесь обычная вежливость. В аэропортах Гоа есть стойки такси с фиксированной ценой.",
+              "level": "A2",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-03",
+              "order": 3,
+              "role": "tourist",
+              "replyTo": "road-02",
+              "en": "How much to this address?",
+              "read": "хау мач ту зис э́дрэс?",
+              "ru": "Сколько стоит до этого адреса?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-04",
+              "order": 4,
+              "role": "local",
+              "replyTo": "road-03",
+              "en": "Fifteen hundred rupees.",
+              "read": "фифти́н ха́ндрэд ру́пиз",
+              "ru": "Полторы тысячи рупий.",
+              "note": "Цены часто называют сотнями: fifteen hundred значит 1500.",
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-05",
+              "order": 5,
+              "role": "tourist",
+              "replyTo": "road-04",
+              "en": "Is it a fixed price?",
+              "read": "из ит э фикст прайс?",
+              "ru": "Это фиксированная цена?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-06",
+              "order": 6,
+              "role": "local",
+              "replyTo": "road-05",
+              "en": "Yes, fixed. Pay here and take the slip.",
+              "read": "йес, фикст. пэй хир энд тэйк зэ слип",
+              "ru": "Да, фиксированная. Оплатите здесь и возьмите квиток.",
+              "note": "Квиток отдают водителю в конце поездки.",
+              "level": "A2",
+              "voice": "en-IN",
+              "status": "Черновик"
+            }
+          ]
+        },
+        {
+          "name": "Такси или рикша на улице",
+          "lines": [
+            {
+              "id": "road-07",
+              "order": 1,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "How much to the beach?",
+              "read": "хау мач ту зэ бич?",
+              "ru": "Сколько стоит до пляжа?",
+              "note": "О цене договаривайтесь до посадки.",
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-08",
+              "order": 2,
+              "role": "local",
+              "replyTo": "road-07",
+              "en": "Five hundred, madam.",
+              "read": "файв ха́ндрэд, мэ́дэм",
+              "ru": "Пятьсот, мадам.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-09",
+              "order": 3,
+              "role": "tourist",
+              "replyTo": "road-08",
+              "en": "Too much. Two hundred.",
+              "read": "ту мач. ту ха́ндрэд",
+              "ru": "Дорого. Двести.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-10",
+              "order": 4,
+              "role": "local",
+              "replyTo": "road-09",
+              "en": "Ok, last price three hundred.",
+              "read": "окэ́й, лэст прайс сри ха́ндрэд",
+              "ru": "Ладно, окончательная цена триста.",
+              "note": "Last price значит окончательная цена, но торг часто продолжается.",
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-11",
+              "order": 5,
+              "role": "tourist",
+              "replyTo": "road-10",
+              "en": "Ok, let's go.",
+              "read": "окэ́й, лэтс гоу",
+              "ru": "Хорошо, поехали.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            }
+          ]
+        },
+        {
+          "name": "В дороге",
+          "lines": [
+            {
+              "id": "road-13",
+              "order": 1,
+              "role": "local",
+              "replyTo": null,
+              "en": "Which side?",
+              "read": "уич сайд?",
+              "ru": "Куда именно? В какую сторону?",
+              "note": "Which side в индийском английском значит куда ехать.",
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-14",
+              "order": 2,
+              "role": "tourist",
+              "replyTo": "road-13",
+              "en": "Left. Right. Straight.",
+              "read": "лэфт. райт. стрэйт",
+              "ru": "Налево. Направо. Прямо.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-15",
+              "order": 3,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Can you show me on the map?",
+              "read": "кэн ю шоу ми он зэ мэп?",
+              "ru": "Покажете на карте?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-16",
+              "order": 4,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Go slowly, please.",
+              "read": "гоу сло́ули, плиз",
+              "ru": "Поезжайте медленнее, пожалуйста.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-17",
+              "order": 5,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Please stop here.",
+              "read": "плиз стоп хир",
+              "ru": "Остановите здесь, пожалуйста.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "road-18",
+              "order": 6,
+              "role": "local",
+              "replyTo": null,
+              "en": "One minute, madam, I am coming.",
+              "read": "уан ми́нит, мэ́дэм, ай эм ка́минг",
+              "ru": "Минутку, мадам, я уже еду.",
+              "note": "One minute и I am coming не означают точное время, ждать можно дольше.",
+              "level": "A2",
+              "voice": "en-IN",
+              "status": "Черновик"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Рынок и торг",
+      "situations": [
+        {
+          "name": "Узнать цену",
+          "lines": [
+            {
+              "id": "market-01",
+              "order": 1,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "How much is this?",
+              "read": "хау мач из зис?",
+              "ru": "Сколько это стоит?",
+              "note": "Первую цену обычно завышают.",
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-02",
+              "order": 2,
+              "role": "local",
+              "replyTo": "market-01",
+              "en": "Five hundred only.",
+              "read": "файв ха́ндрэд о́нли",
+              "ru": "Пятьсот.",
+              "note": "Only здесь не значит всего, это просто усиление.",
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-03",
+              "order": 3,
+              "role": "tourist",
+              "replyTo": "market-02",
+              "en": "Too much. Last price?",
+              "read": "ту мач. лэст прайс?",
+              "ru": "Дорого. Какая окончательная цена?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-04",
+              "order": 4,
+              "role": "local",
+              "replyTo": "market-03",
+              "en": "Ok, for you four hundred.",
+              "read": "окэ́й, фор ю фор ха́ндрэд",
+              "ru": "Ладно, для вас четыреста.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-05",
+              "order": 5,
+              "role": "tourist",
+              "replyTo": "market-04",
+              "en": "Three hundred, ok?",
+              "read": "сри ха́ндрэд, окэ́й?",
+              "ru": "Триста, хорошо?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-06",
+              "order": 6,
+              "role": "local",
+              "replyTo": "market-05",
+              "en": "No profit, madam! Ok, ok, take it.",
+              "read": "ноу про́фит, мэ́дэм! окэ́й, окэ́й, тэйк ит",
+              "ru": "Мне без прибыли, мадам! Ладно, берите.",
+              "note": "No profit обычно часть торга, всерьёз воспринимать не нужно.",
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-07",
+              "order": 7,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "I will think about it.",
+              "read": "ай уил синк эба́ут ит",
+              "ru": "Я подумаю.",
+              "note": "Если отойти, цену часто снижают.",
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-08",
+              "order": 8,
+              "role": "local",
+              "replyTo": "market-07",
+              "en": "Wait, wait! Tell me your price.",
+              "read": "уэйт, уэйт! тэл ми ёр прайс",
+              "ru": "Подождите! Назовите вашу цену.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            }
+          ]
+        },
+        {
+          "name": "Выбор товара",
+          "lines": [
+            {
+              "id": "market-09",
+              "order": 1,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Do you have other colours?",
+              "read": "ду ю хэв а́зэр ка́лэрз?",
+              "ru": "Есть другие цвета?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-10",
+              "order": 2,
+              "role": "local",
+              "replyTo": "market-09",
+              "en": "Yes, yes, see this side.",
+              "read": "йес, йес, си зис сайд",
+              "ru": "Да, смотрите вот здесь.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-11",
+              "order": 3,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Do you have a bigger size?",
+              "read": "ду ю хэв э би́гэр сайз?",
+              "ru": "Есть размер побольше?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-12",
+              "order": 4,
+              "role": "local",
+              "replyTo": "market-11",
+              "en": "Free size, madam, fits everyone.",
+              "read": "фри сайз, мэ́дэм, фитс э́вриуан",
+              "ru": "Безразмерный, подойдёт всем.",
+              "note": "Free size значит один универсальный размер.",
+              "level": "A2",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-13",
+              "order": 5,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Can I try it on?",
+              "read": "кэн ай трай ит он?",
+              "ru": "Можно примерить?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            }
+          ]
+        },
+        {
+          "name": "Оплата",
+          "lines": [
+            {
+              "id": "market-14",
+              "order": 1,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Can I pay by card?",
+              "read": "кэн ай пэй бай кард?",
+              "ru": "Можно оплатить картой?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-15",
+              "order": 2,
+              "role": "local",
+              "replyTo": "market-14",
+              "en": "Only cash or UPI.",
+              "read": "о́нли кэш ор ю-пи-а́й",
+              "ru": "Только наличные или UPI.",
+              "note": "UPI это индийская система оплаты по QR-коду. Для иностранцев есть отдельные приложения, уточните заранее.",
+              "level": "A1",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-16",
+              "order": 3,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "I don't have change.",
+              "read": "ай доунт хэв ченьдж",
+              "ru": "У меня нет мелких денег.",
+              "note": "Change значит и сдача, и мелочь.",
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-17",
+              "order": 4,
+              "role": "local",
+              "replyTo": "market-16",
+              "en": "No problem, I will adjust.",
+              "read": "ноу про́блэм, ай уил эджа́ст",
+              "ru": "Ничего страшного, я округлю.",
+              "note": "Adjust в индийском английском значит подстроиться, уступить.",
+              "level": "A2",
+              "voice": "en-IN",
+              "status": "Черновик"
+            },
+            {
+              "id": "market-18",
+              "order": 5,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Can I have a bag, please?",
+              "read": "кэн ай хэв э бэг, плиз?",
+              "ru": "Можно пакет, пожалуйста?",
+              "note": "Пластиковые пакеты часто запрещены, лучше взять свою сумку.",
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Не понял",
+      "situations": [
+        {
+          "name": "Попросить помощи",
+          "lines": [
+            {
+              "id": "help-01",
+              "order": 1,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Sorry, I don't understand.",
+              "read": "со́ри, ай доунт андэрстэ́нд",
+              "ru": "Извините, я не понимаю.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "help-02",
+              "order": 2,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Please speak slowly.",
+              "read": "плиз спик сло́ули",
+              "ru": "Говорите, пожалуйста, медленнее.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "help-03",
+              "order": 3,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Can you repeat, please?",
+              "read": "кэн ю рипи́т, плиз?",
+              "ru": "Повторите, пожалуйста.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "help-04",
+              "order": 4,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Please write it down.",
+              "read": "плиз райт ит даун",
+              "ru": "Напишите, пожалуйста.",
+              "note": "Можно протянуть телефон с открытой заметкой.",
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "help-05",
+              "order": 5,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "How much in rupees?",
+              "read": "хау мач ин ру́пиз?",
+              "ru": "Сколько это в рупиях?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "help-06",
+              "order": 6,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "I speak a little English.",
+              "read": "ай спик э ли́тл и́нглиш",
+              "ru": "Я немного говорю по-английски.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "help-07",
+              "order": 7,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Do you speak Russian?",
+              "read": "ду ю спик ра́шэн?",
+              "ru": "Вы говорите по-русски?",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            },
+            {
+              "id": "help-08",
+              "order": 8,
+              "role": "tourist",
+              "replyTo": null,
+              "en": "Thank you very much.",
+              "read": "сэнк ю вэ́ри мач",
+              "ru": "Большое спасибо.",
+              "note": null,
+              "level": "A1",
+              "voice": "en-US",
+              "status": "Черновик"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

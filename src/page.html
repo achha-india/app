@@ -1,0 +1,587 @@
+<meta charset="utf-8">
+<title>Ачча!</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#613115">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Pliant:wght@500;700&display=swap">
+<style>
+/* Layout: one column, journey route as a vertical line of stops; fixed bottom bar for the "right now" actions. */
+/* Palette: bone #DDD8CA, sky #9ABED8, khaki #AE9571, copper #C67F2F, umber #613115 */
+:root {
+  --bg: #DDD8CA;          /* bone */
+  --surface: #F7F4EC;     /* light bone for cards */
+  --ink: #3B2010;         /* deep umber for text */
+  --muted: #6B583C;       /* khaki, darkened for reading */
+  --line: #C9BFA9;        /* khaki tint for borders */
+  --rail: #AE9571;        /* khaki: route line */
+  --primary: #613115;     /* umber: route dots, switches, links */
+  --primary-soft: #D3E2EC;/* sky tint */
+  --accent: #C67F2F;      /* copper: «Не понял», stars */
+  --accent-ink: #2B1206;
+  --read: #2C5A78;        /* sky, darkened: Cyrillic reading */
+  --local-bg: #DCE8F1;    /* sky tint: replies of Indians */
+  --local-line: #9ABED8;  /* sky */
+  --note: #7A4612;        /* copper, darkened */
+  --shadow: 0 1px 2px rgba(97,49,21,.08), 0 4px 14px rgba(97,49,21,.08);
+  --font-display: "Pliant", "Manrope", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r: 14px;
+  --bar-h: 64px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C120B; --surface: #2A1C12; --ink: #EDE8DC; --muted: #B8A688; --line: #43301F; --rail: #7A6748;
+    --primary: #9ABED8; --primary-soft: #22313A; --accent: #C67F2F; --accent-ink: #1E0F05;
+    --read: #9ABED8; --local-bg: #1E2A31; --local-line: #35505F; --note: #E3B57A;
+    --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C120B; --surface: #2A1C12; --ink: #EDE8DC; --muted: #B8A688; --line: #43301F; --rail: #7A6748;
+  --primary: #9ABED8; --primary-soft: #22313A; --accent: #C67F2F; --accent-ink: #1E0F05;
+  --read: #9ABED8; --local-bg: #1E2A31; --local-line: #35505F; --note: #E3B57A;
+  --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { min-height: 100%; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  -webkit-tap-highlight-color: transparent;
+}
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+
+.wrap {
+  max-width: 640px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+header.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+header.top .wrap { padding-block: 10px; display: flex; flex-direction: column; gap: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; min-height: 36px; }
+.brand h1 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1.1; margin: 0; color: var(--primary); }
+.brand .rupee { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); font-weight: 700; flex: none; }
+.back { display: none; align-items: center; gap: 4px; border: 0; background: none; padding: 6px 8px 6px 0; color: var(--primary); font-weight: 600; cursor: pointer; }
+body.sub .back { display: inline-flex; }
+body.sub .brand .rupee, body.sub .brand-name { display: none; }
+.brand-name { display: flex; align-items: baseline; gap: 8px; min-width: 0; flex-wrap: wrap; }
+.brand-name .tag { font-size: 13px; color: var(--muted); }
+.crumb { font-size: 13px; color: var(--muted); margin-left: auto; text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.search { position: relative; }
+.search input {
+  width: 100%; height: 44px; border-radius: 12px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink); padding: 0 40px 0 40px; font: inherit; font-size: 16px;
+}
+.search svg.lens { position: absolute; left: 12px; top: 12px; color: var(--muted); }
+.search .clear { position: absolute; right: 4px; top: 4px; width: 36px; height: 36px; border: 0; background: none; color: var(--muted); cursor: pointer; border-radius: 10px; }
+
+main { padding-block: 18px calc(var(--bar-h) + 28px + env(safe-area-inset-bottom, 0px)); }
+.view { display: flex; flex-direction: column; gap: 16px; }
+.lead { margin: 0; color: var(--muted); font-size: 15px; }
+.h2 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1.25; margin: 0; text-wrap: balance; }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+
+/* Route */
+.route { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.stop { display: grid; grid-template-columns: 34px 1fr; gap: 12px; }
+.rail { display: flex; flex-direction: column; align-items: center; }
+.dot { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 15px; background: var(--primary); color: var(--bg); font-variant-numeric: tabular-nums; flex: none; }
+.rail::after { content: ""; width: 2px; flex: 1; background: repeating-linear-gradient(var(--rail) 0 6px, transparent 6px 11px); margin-block: 4px; }
+.stop:last-child .rail::after { display: none; }
+.stop-body { padding-bottom: 22px; min-width: 0; }
+.stop-title { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.15; color: var(--primary); margin: 3px 0 12px; }
+.sits { display: flex; flex-direction: column; gap: 8px; }
+.sit {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 13px 14px; cursor: pointer; box-shadow: var(--shadow);
+}
+.sit:active { transform: scale(.99); }
+.sit .name { font-weight: 600; flex: 1; min-width: 0; }
+.sit .count { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sit svg { color: var(--muted); flex: none; }
+
+/* Dialog */
+.sit-head { display: flex; flex-direction: column; gap: 6px; }
+.toggle {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--primary-soft); border-radius: var(--r); padding: 10px 14px;
+}
+.toggle label { font-size: 15px; font-weight: 500; }
+.toggle small { display: block; color: var(--muted); font-weight: 400; font-size: 13px; }
+.switch { position: relative; width: 50px; height: 30px; flex: none; }
+.switch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.switch span { position: absolute; inset: 0; border-radius: 30px; background: var(--line); transition: background .15s; pointer-events: none; }
+.switch span::after { content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .15s; }
+.switch input:checked + span { background: var(--primary); }
+.switch input:checked + span::after { transform: translateX(20px); }
+.switch input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.dialog { display: flex; flex-direction: column; gap: 12px; }
+.line {
+  max-width: 92%; display: flex; flex-direction: column; gap: 4px;
+  padding: 12px 14px 10px; border-radius: 18px; min-width: 0;
+}
+.line.me { align-self: flex-end; background: var(--surface); border: 1px solid var(--line); border-bottom-right-radius: 6px; box-shadow: var(--shadow); }
+.line.local { align-self: flex-start; background: var(--local-bg); border: 1px solid var(--local-line); border-bottom-left-radius: 6px; }
+.line.wide { max-width: 100%; align-self: stretch; }
+.who { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.who .lvl { font-weight: 600; letter-spacing: 0; text-transform: none; border: 1px solid var(--line); border-radius: 6px; padding: 0 5px; font-size: 11px; }
+.en { font-size: 19px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.rd { font-size: 17px; color: var(--read); font-weight: 500; overflow-wrap: anywhere; }
+.ru { font-size: 15px; color: var(--muted); }
+.note { font-size: 14px; color: var(--note); display: flex; gap: 6px; margin-top: 2px; }
+.note svg { flex: none; margin-top: 2px; }
+.acts { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.act {
+  display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px;
+  border-radius: 10px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: 14px; font-weight: 500;
+}
+.line.local .act { border-color: var(--local-line); }
+.act.icon { width: 36px; padding: 0; justify-content: center; }
+.act.on { color: var(--accent); }
+.act.on svg { fill: currentColor; }
+.act.primary { background: var(--primary); color: var(--bg); border-color: var(--primary); }
+.hidden-ans {
+  display: flex; flex-direction: column; gap: 6px; align-items: flex-start;
+}
+.reveal { border: 1px dashed var(--primary); color: var(--primary); background: none; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-weight: 600; font-size: 15px; }
+.ctx { font-size: 13px; color: var(--muted); }
+.ctx a { color: var(--primary); }
+
+.empty { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); padding: 20px; color: var(--muted); text-align: center; }
+.result-ctx { font-size: 13px; color: var(--muted); }
+.result-ctx button { border: 0; background: none; color: var(--primary); font-weight: 600; padding: 0; cursor: pointer; font-size: 13px; }
+
+/* Bottom bar */
+nav.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; padding-block: 8px; min-height: var(--bar-h); align-items: center; }
+.tab { display: flex; flex-direction: column; align-items: center; gap: 2px; border: 0; background: none; padding: 4px; border-radius: 12px; cursor: pointer; color: var(--muted); font-size: 12px; font-weight: 600; }
+.tab[aria-current="page"] { color: var(--primary); }
+.tab .badge { font-variant-numeric: tabular-nums; }
+.help-btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: 46px; border-radius: 14px; border: 0; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 15px; cursor: pointer; }
+
+/* Sheet */
+.scrim { position: fixed; inset: 0; background: rgba(43,18,6,.45); z-index: 20; }
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; max-height: 82%;
+  background: var(--bg); border-radius: 20px 20px 0 0; overflow-y: auto;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+.sheet .wrap { padding-block: 10px 6px; display: flex; flex-direction: column; gap: 12px; }
+.grab { width: 40px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 4px; }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.x { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; display: grid; place-items: center; }
+
+/* Show mode */
+.show {
+  position: fixed; inset: 0; z-index: 30; background: var(--surface); color: var(--ink);
+  display: flex; flex-direction: column; justify-content: center; gap: 18px;
+  padding: calc(24px + env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px));
+  cursor: pointer;
+}
+.show .big { font-size: clamp(34px, 9vw, 64px); font-weight: 700; line-height: 1.12; overflow-wrap: anywhere; }
+.show .big-rd { font-size: clamp(18px, 4.5vw, 26px); color: var(--read); }
+.show .big-ru { font-size: 16px; color: var(--muted); }
+.show .hint { position: absolute; left: 0; right: 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); text-align: center; font-size: 13px; color: var(--muted); }
+.show .rot { position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(14px, env(safe-area-inset-right, 0px)); }
+
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%); z-index: 40;
+  bottom: calc(var(--bar-h) + 20px + env(safe-area-inset-bottom, 0px));
+  background: var(--ink); color: var(--bg); border-radius: 12px; padding: 10px 14px; font-size: 14px; max-width: calc(100% - 32px);
+}
+.draft-note { font-size: 12px; color: var(--muted); text-align: center; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <span class="rupee" aria-hidden="true">₹</span>
+      <div class="brand-name"><h1>Ачча!</h1><span class="tag">разговорник для Индии</span></div>
+      <button class="back" id="back" type="button" aria-label="Назад">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        <span>Маршрут</span>
+      </button>
+      <span class="crumb" id="crumb"></span>
+    </div>
+    <div class="search" role="search">
+      <svg class="lens" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" inputmode="search" autocomplete="off" placeholder="Поиск: сдача, такси, дорого…" aria-label="Поиск фраз">
+      <button class="clear" id="clear" type="button" aria-label="Очистить поиск" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main" aria-live="polite">
+  <div class="empty">Загружаем фразы…</div>
+</main>
+
+<nav class="bar" aria-label="Разделы">
+  <div class="wrap">
+    <button class="tab" id="tab-route" type="button">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2.2"/><circle cx="18" cy="19" r="2.2"/><path d="M8 5h7a3.5 3.5 0 010 7H9a3.5 3.5 0 000 7h7"/></svg>
+      Маршрут
+    </button>
+    <button class="tab" id="tab-fav" type="button">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg>
+      <span>Мои фразы <span class="badge" id="fav-count"></span></span>
+    </button>
+    <button class="help-btn" id="help-open" type="button">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.2M12 17h.01"/></svg>
+      Не понял
+    </button>
+  </div>
+</nav>
+
+<div class="scrim" id="scrim" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <div class="wrap">
+    <div class="grab" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 class="h2" id="sheet-title">Если не поняли</h2>
+      <button class="x" id="sheet-close" type="button" aria-label="Закрыть">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="dialog" id="help-list"></div>
+  </div>
+</section>
+
+<div class="show" id="show" role="dialog" aria-modal="true" aria-label="Фраза крупно" hidden tabindex="-1">
+  <div class="big" id="show-en"></div>
+  <div class="big-rd" id="show-rd"></div>
+  <div class="big-ru" id="show-ru"></div>
+  <button class="act rot" id="show-speak" type="button">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg>
+    Озвучить
+  </button>
+  <div class="hint">Нажмите в любом месте, чтобы закрыть</div>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function () {
+  var HELP_STAGE = 'Не понял';
+  var FAV_KEY = 'pb-fav-v1';
+  var data = null, route = [], help = [], byId = {};
+  var state = { view: 'route', stage: 0, sit: 0, q: '', selfcheck: false, revealed: {} };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var main = $('main');
+
+  var ICON = {
+    speak: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg>',
+    show: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
+    star: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg>',
+    info: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg>',
+    chev: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>'
+  };
+
+  // ---------- storage (best effort) ----------
+  var favs = [];
+  try { favs = JSON.parse(localStorage.getItem(FAV_KEY) || '[]') || []; } catch (e) { favs = []; }
+  function saveFavs() { try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); } catch (e) {} }
+  function isFav(id) { return favs.indexOf(id) >= 0; }
+  function toggleFav(id) {
+    var i = favs.indexOf(id);
+    if (i >= 0) { favs.splice(i, 1); toast('Убрано из «Моих фраз»'); }
+    else { favs.push(id); toast('Добавлено в «Мои фразы»'); }
+    saveFavs(); updateFavCount();
+  }
+  function updateFavCount() {
+    var n = favs.filter(function (id) { return byId[id]; }).length;
+    $('fav-count').textContent = n ? '· ' + n : '';
+  }
+
+  // ---------- helpers ----------
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function norm(s) { return String(s || '').toLowerCase().replace(/\u0301/g, '').replace(/\u0451/g, '\u0435').replace(/[^a-z\u0430-\u044f0-9\s-]/g, ' '); }
+  function plural(n, one, few, many) {
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+    return many;
+  }
+  var toastTimer;
+  function toast(msg) {
+    var t = $('toast'); t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, 1800);
+  }
+
+  // ---------- speech ----------
+  var voices = [];
+  function loadVoices() { try { voices = window.speechSynthesis ? speechSynthesis.getVoices() : []; } catch (e) { voices = []; } }
+  loadVoices();
+  try { if (window.speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices; } catch (e) {}
+  function pickVoice(lang) {
+    if (!voices.length) loadVoices();
+    var exact = voices.filter(function (v) { return v.lang && v.lang.replace('_', '-').toLowerCase() === lang.toLowerCase(); });
+    if (exact.length) return exact[0];
+    var en = voices.filter(function (v) { return v.lang && v.lang.toLowerCase().indexOf('en') === 0; });
+    return en[0] || null;
+  }
+  function speak(line) {
+    if (!('speechSynthesis' in window)) { toast('Озвучка недоступна в этом браузере'); return; }
+    try {
+      speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(line.en);
+      var lang = line.voice || 'en-US';
+      u.lang = lang; u.rate = 0.85;
+      var v = pickVoice(lang); if (v) u.voice = v;
+      speechSynthesis.speak(u);
+    } catch (e) { toast('Не получилось озвучить'); }
+  }
+
+  // ---------- line card ----------
+  function lineCard(l, opts) {
+    opts = opts || {};
+    var me = l.role === 'tourist';
+    var hide = opts.selfcheck && me && !state.revealed[l.id];
+    var h = '<article class="line ' + (me ? 'me' : 'local') + (opts.wide ? ' wide' : '') + '" data-id="' + esc(l.id) + '">';
+    h += '<div class="who">' + (me ? 'Вы говорите' : 'Вам могут сказать') + (l.level === 'A2' ? ' <span class="lvl">A2</span>' : '') + '</div>';
+    if (hide) {
+      h += '<div class="ru" style="color:var(--ink);font-size:17px;font-weight:500">' + esc(l.ru) + '</div>';
+      h += '<div class="hidden-ans"><span class="ctx">Вспомните, как это по-английски</span>';
+      h += '<button class="reveal" type="button" data-act="reveal">Проверить</button></div>';
+    } else {
+      h += '<div class="en" lang="en">' + esc(l.en) + '</div>';
+      h += '<div class="rd">' + esc(l.read) + '</div>';
+      h += '<div class="ru">' + esc(l.ru) + '</div>';
+      if (l.note) h += '<div class="note">' + ICON.info + '<span>' + esc(l.note) + '</span></div>';
+      if (opts.ctx) h += '<div class="result-ctx">' + opts.ctx + '</div>';
+      h += '<div class="acts">';
+      h += '<button class="act" type="button" data-act="speak">' + ICON.speak + 'Озвучить</button>';
+      if (me) h += '<button class="act" type="button" data-act="show">' + ICON.show + 'Показать</button>';
+      var on = isFav(l.id);
+      h += '<button class="act icon' + (on ? ' on' : '') + '" type="button" data-act="fav" aria-pressed="' + on + '" aria-label="' + (on ? 'Убрать из моих фраз' : 'Добавить в мои фразы') + '">' + ICON.star + '</button>';
+      h += '</div>';
+    }
+    return h + '</article>';
+  }
+
+  // ---------- views ----------
+  function viewRoute() {
+    var h = '<div class="view"><p class="lead">Пройдите маршрут дома, чтобы выучить фразы заранее. В поездке откройте нужную ситуацию или найдите фразу поиском.</p>';
+    h += '<ol class="route">';
+    route.forEach(function (st, si) {
+      h += '<li class="stop"><div class="rail"><span class="dot">' + (si + 1) + '</span></div><div class="stop-body">';
+      h += '<div class="stop-title">' + esc(st.name) + '</div><div class="sits">';
+      st.situations.forEach(function (s, i) {
+        var n = s.lines.length;
+        h += '<button class="sit" type="button" data-go="' + si + '-' + i + '"><span class="name">' + esc(s.name) + '</span><span class="count">' + n + ' ' + plural(n, 'фраза', 'фразы', 'фраз') + '</span>' + ICON.chev + '</button>';
+      });
+      h += '</div></div></li>';
+    });
+    h += '</ol><p class="draft-note">Фразы пока проверяются носителями языка.</p></div>';
+    return h;
+  }
+
+  function viewSituation() {
+    var st = route[state.stage], s = st && st.situations[state.sit];
+    if (!s) { state.view = 'route'; return viewRoute(); }
+    var h = '<div class="view"><div class="sit-head"><span class="eyebrow">' + esc(st.name) + '</span><h2 class="h2">' + esc(s.name) + '</h2></div>';
+    h += '<div class="toggle"><label for="selfcheck">Проверить себя<small>Скрыть английский в ваших фразах</small></label>';
+    h += '<span class="switch"><input type="checkbox" id="selfcheck"' + (state.selfcheck ? ' checked' : '') + '><span></span></span></div>';
+    h += '<div class="dialog">';
+    s.lines.forEach(function (l) { h += lineCard(l, { selfcheck: state.selfcheck }); });
+    h += '</div>';
+    var next = nextSituation();
+    if (next) h += '<button class="sit" type="button" data-go="' + next.key + '"><span class="name">Дальше: ' + esc(next.name) + '</span>' + ICON.chev + '</button>';
+    return h + '</div>';
+  }
+
+  function nextSituation() {
+    var st = route[state.stage];
+    if (st && state.sit + 1 < st.situations.length) return { key: state.stage + '-' + (state.sit + 1), name: st.situations[state.sit + 1].name };
+    var ns = route[state.stage + 1];
+    if (ns) return { key: (state.stage + 1) + '-0', name: ns.situations[0].name };
+    return null;
+  }
+
+  function ctxLink(l) {
+    if (!l._stageIdx && l._stageIdx !== 0) return '';
+    return 'Из ситуации <button type="button" data-go="' + l._stageIdx + '-' + l._sitIdx + '">' + esc(l._sit) + '</button>';
+  }
+
+  function viewFav() {
+    var list = favs.map(function (id) { return byId[id]; }).filter(Boolean);
+    var h = '<div class="view"><h2 class="h2">Мои фразы</h2>';
+    if (!list.length) {
+      h += '<div class="empty">Здесь будут фразы, отмеченные звёздочкой. Отметьте те, что понадобятся чаще всего, чтобы открывать их в два касания.</div>';
+    } else {
+      h += '<div class="dialog">';
+      list.forEach(function (l) { h += lineCard(l, { wide: true, ctx: ctxLink(l) }); });
+      h += '</div>';
+    }
+    return h + '</div>';
+  }
+
+  function viewSearch() {
+    var tokens = norm(state.q).split(/\s+/).filter(function (t) { return t.length > 1 || /\d/.test(t); });
+    var all = [];
+    Object.keys(byId).forEach(function (id) { all.push(byId[id]); });
+    var hits = tokens.length ? all.filter(function (l) {
+      return tokens.every(function (t) { return l._hay.indexOf(t) >= 0; });
+    }) : [];
+    hits.sort(function (a, b) {
+      var aq = norm(a.ru).indexOf(tokens[0]) >= 0 ? 0 : 1, bq = norm(b.ru).indexOf(tokens[0]) >= 0 ? 0 : 1;
+      return aq - bq || (a.role === 'tourist' ? -1 : 1) - (b.role === 'tourist' ? -1 : 1);
+    });
+    var h = '<div class="view"><div class="eyebrow">' + (hits.length ? 'Найдено: ' + hits.length : 'Поиск') + '</div>';
+    if (!hits.length) {
+      h += '<div class="empty">Ничего не нашлось по запросу «' + esc(state.q) + '». Попробуйте другое слово, по-русски или по-английски.</div>';
+    } else {
+      h += '<div class="dialog">';
+      hits.slice(0, 40).forEach(function (l) { h += lineCard(l, { wide: true, ctx: ctxLink(l) }); });
+      h += '</div>';
+    }
+    return h + '</div>';
+  }
+
+  function render(scrollTop) {
+    if (!data) return;
+    var html, sub = false, crumb = '';
+    if (state.q.trim()) { html = viewSearch(); }
+    else if (state.view === 'sit') { html = viewSituation(); sub = true; crumb = (state.stage + 1) + ' из ' + route.length; }
+    else if (state.view === 'fav') { html = viewFav(); }
+    else { html = viewRoute(); }
+    main.innerHTML = html;
+    document.body.classList.toggle('sub', sub && !state.q.trim());
+    $('crumb').textContent = state.q.trim() ? '' : crumb;
+    $('tab-route').setAttribute('aria-current', state.view !== 'fav' && !state.q.trim() ? 'page' : 'false');
+    $('tab-fav').setAttribute('aria-current', state.view === 'fav' && !state.q.trim() ? 'page' : 'false');
+    $('clear').hidden = !state.q;
+    if (scrollTop) window.scrollTo(0, 0);
+  }
+
+  // ---------- navigation (hash with plain tokens) ----------
+  function go(hash) {
+    if (location.hash !== '#' + hash) { try { location.hash = hash; } catch (e) { applyHash(hash); } }
+    else applyHash(hash);
+  }
+  function applyHash(h) {
+    h = (h || '').replace(/^#/, '');
+    var m = /^s-(\d+)-(\d+)$/.exec(h);
+    state.revealed = {};
+    if (m && route[+m[1]] && route[+m[1]].situations[+m[2]]) { state.view = 'sit'; state.stage = +m[1]; state.sit = +m[2]; }
+    else if (h === 'fav') state.view = 'fav';
+    else state.view = 'route';
+    if (state.q) { state.q = ''; $('q').value = ''; }
+    render(true);
+  }
+  window.addEventListener('hashchange', function () { applyHash(location.hash); });
+
+  // ---------- show mode ----------
+  var lastFocus = null, showing = null, wakeLock = null;
+  function openShow(l) {
+    showing = l; lastFocus = document.activeElement;
+    $('show-en').textContent = l.en; $('show-rd').textContent = l.read; $('show-ru').textContent = l.ru;
+    $('show').hidden = false; $('show').focus();
+    try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function (w) { wakeLock = w; }).catch(function () {}); } catch (e) {}
+  }
+  function closeShow() {
+    $('show').hidden = true; showing = null;
+    try { if (wakeLock) { wakeLock.release(); wakeLock = null; } } catch (e) {}
+    if (lastFocus) try { lastFocus.focus(); } catch (e) {}
+  }
+  $('show').addEventListener('click', function (e) { if (e.target.closest('#show-speak')) return; closeShow(); });
+  $('show-speak').addEventListener('click', function () { if (showing) speak(showing); });
+
+  // ---------- help sheet ----------
+  function openSheet() {
+    var h = '';
+    help.forEach(function (l) { h += lineCard(l, { wide: true }); });
+    $('help-list').innerHTML = h || '<div class="empty">Фразы пока не добавлены.</div>';
+    $('scrim').hidden = false; $('sheet').hidden = false; $('sheet-close').focus();
+  }
+  function closeSheet() { $('scrim').hidden = true; $('sheet').hidden = true; $('help-open').focus(); }
+  $('help-open').addEventListener('click', openSheet);
+  $('sheet-close').addEventListener('click', closeSheet);
+  $('scrim').addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (!$('show').hidden) closeShow(); else if (!$('sheet').hidden) closeSheet();
+  });
+
+  // ---------- events ----------
+  function onAct(e) {
+    var go_ = e.target.closest('[data-go]');
+    if (go_) { if (!$('sheet').hidden) closeSheet(); go('s-' + go_.getAttribute('data-go')); return; }
+    var b = e.target.closest('[data-act]'); if (!b) return;
+    var card = b.closest('[data-id]'); var l = card && byId[card.getAttribute('data-id')]; if (!l) return;
+    var act = b.getAttribute('data-act');
+    if (act === 'speak') speak(l);
+    else if (act === 'show') openShow(l);
+    else if (act === 'reveal') { state.revealed[l.id] = true; rerenderCard(card, l); }
+    else if (act === 'fav') {
+      toggleFav(l.id);
+      if (state.view === 'fav' && !state.q.trim()) render(false); else rerenderCard(card, l);
+    }
+  }
+  function rerenderCard(card, l) {
+    var inSheet = !!card.closest('#sheet');
+    var wide = card.classList.contains('wide');
+    var tmp = document.createElement('div');
+    tmp.innerHTML = lineCard(l, { selfcheck: !inSheet && state.view === 'sit' && !state.q.trim() && state.selfcheck, wide: wide, ctx: wide && !inSheet ? ctxLink(l) : '' });
+    card.replaceWith(tmp.firstChild);
+  }
+  main.addEventListener('click', onAct);
+  $('help-list').addEventListener('click', onAct);
+  main.addEventListener('change', function (e) {
+    if (e.target.id === 'selfcheck') { state.selfcheck = e.target.checked; state.revealed = {}; render(false); }
+  });
+  $('back').addEventListener('click', function () { go('route'); });
+  $('tab-route').addEventListener('click', function () { go('route'); });
+  $('tab-fav').addEventListener('click', function () { go('fav'); });
+  var qTimer;
+  $('q').addEventListener('input', function (e) {
+    clearTimeout(qTimer);
+    var v = e.target.value;
+    qTimer = setTimeout(function () { state.q = v; render(true); }, 120);
+  });
+  $('clear').addEventListener('click', function () { $('q').value = ''; state.q = ''; render(true); $('q').focus(); });
+
+  // ---------- data ----------
+  function index(d) {
+    data = d; route = []; help = []; byId = {};
+    d.stages.forEach(function (st) {
+      var isHelp = st.name === HELP_STAGE;
+      var si = isHelp ? -1 : route.length;
+      if (!isHelp) route.push(st);
+      st.situations.forEach(function (s, i) {
+        s.lines.forEach(function (l) {
+          l._sit = s.name; l._stage = st.name;
+          if (!isHelp) { l._stageIdx = si; l._sitIdx = i; }
+          l._hay = norm([l.ru, l.en, l.read, l.note, s.name, st.name].join(' '));
+          byId[l.id] = l;
+          if (isHelp) help.push(l);
+        });
+      });
+    });
+    updateFavCount();
+    applyHash(location.hash);
+  }
+  fetch('phrases.json', { cache: 'no-cache' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(index)
+    .catch(function () {
+      main.innerHTML = '<div class="empty">Не удалось загрузить фразы. Проверьте интернет и обновите страницу.</div>';
+    });
+})();
+</script>
