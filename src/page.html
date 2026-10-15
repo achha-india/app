@@ -442,6 +442,7 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
   }
   // Сначала записанный индийский голос (audio/<id>.mp3), если файла нет — голос телефона.
   var player = null;
+  var AUDIO_RATE = 0.8;
   function speak(line) {
     try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {}
     try {
@@ -453,6 +454,9 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
       var fallback = function () { if (done) return; done = true; speakTTS(line); };
       player.onerror = fallback;
       player.src = src;
+      // Чуть медленнее записи; высота голоса при этом не меняется.
+      player.preservesPitch = true; player.webkitPreservesPitch = true;
+      player.defaultPlaybackRate = AUDIO_RATE; player.playbackRate = AUDIO_RATE;
       var p = player.play();
       if (p && p.catch) p.catch(function (err) { if (!err || err.name !== 'AbortError') fallback(); });
     } catch (e) { speakTTS(line); }
@@ -463,7 +467,7 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
       speechSynthesis.cancel();
       var u = new SpeechSynthesisUtterance(line.en);
       var lang = line.voice || 'en-US';
-      u.lang = lang; u.rate = 0.85;
+      u.lang = lang; u.rate = 0.8;
       var v = pickVoice(lang); if (v) u.voice = v;
       speechSynthesis.speak(u);
     } catch (e) { toast('Не получилось озвучить'); }
