@@ -174,3 +174,64 @@ function titleOf_(key) {
 
 // Для локальной проверки в Node.js; в Apps Script эта строка ничего не делает.
 if (typeof module !== 'undefined') module.exports = { buildPhrasebook: buildPhrasebook };
+
+// ---------------------------------------------------------------------------
+// Обратная связь из приложения: сообщения пишутся на лист «Отзывы».
+// Личные данные не сохраняются: только дата, текст и раздел приложения.
+//
+// Как включить (один раз):
+//   Apps Script → «Начать развертывание» (Deploy) → «Новое развертывание» →
+//   тип «Веб-приложение» → «Запуск от имени»: Я, «У кого есть доступ»: Все →
+//   «Начать развертывание». Скопируйте ссылку вида https://script.google.com/macros/s/.../exec
+//   и вставьте её в приложение (FEEDBACK_URL).
+// ---------------------------------------------------------------------------
+
+var FEEDBACK_SHEET = 'Отзывы';
+var FEEDBACK_MAX_PER_MIN = 30;
+
+function doPost(e) {
+  try {
+    var data = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    var text = clean_(data.text, 1000);
+    var context = clean_(data.context, 200);
+    if (text.length < 3) return json_({ ok: false });
+
+    // Защита от спама: не больше FEEDBACK_MAX_PER_MIN сообщений в минуту на всё приложение
+    var cache = CacheService.getScriptCache();
+    var key = 'fb-' + Math.floor(Date.now() / 60000);
+    var n = Number(cache.get(key) || 0);
+    if (n >= FEEDBACK_MAX_PER_MIN) return json_({ ok: false });
+    cache.put(key, String(n + 1), 120);
+
+    var lock = LockService.getScriptLock();
+    lock.waitLock(5000);
+    try {
+      var ss = SpreadsheetApp.getActive() || SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('SHEET_ID'));
+      var sh = ss.getSheetByName(FEEDBACK_SHEET);
+      if (!sh) {
+        sh = ss.insertSheet(FEEDBACK_SHEET);
+        sh.appendRow(['Дата', 'Сообщение', 'Раздел', 'Статус']);
+        sh.setFrozenRows(1);
+        sh.getRange('A1:D1').setFontWeight('bold');
+        sh.setColumnWidth(2, 420);
+      }
+      sh.appendRow([new Date(), text, context, 'Новое']);
+    } finally {
+      lock.releaseLock();
+    }
+    return json_({ ok: true });
+  } catch (err) {
+    return json_({ ok: false });
+  }
+}
+
+function clean_(v, max) {
+  var s = String(v == null ? '' : v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, max);
+  // Чтобы текст не превратился в формулу таблицы
+  if (/^[=+\-@]/.test(s)) s = "'" + s;
+  return s;
+}
+
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}

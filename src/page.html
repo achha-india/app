@@ -224,6 +224,14 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
 .btn { height: 44px; padding: 0 18px; border-radius: 12px; border: 0; font-weight: 600; font-size: 15px; cursor: pointer; }
 .btn.main { background: var(--accent); color: var(--accent-ink); }
 .btn.ghost { background: var(--chip); color: var(--ink); }
+.fb-form { display: flex; flex-direction: column; gap: 10px; }
+.fb-label { font-weight: 600; }
+.fb-form textarea { width: 100%; min-height: 120px; resize: vertical; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 12px; font: inherit; font-size: 16px; }
+.fb-ctx { font-size: 13px; color: var(--muted); }
+.fb-note { margin: 0; font-size: 13px; color: var(--muted); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.link-btn { border: 0; background: none; padding: 0; color: var(--primary); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; align-self: flex-start; }
+.ask-more { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; font-size: 14px; color: var(--muted); padding: 4px 2px; }
 .intro .lead b { color: var(--ink); font-weight: 600; }
 .about { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
 .about p { margin: 0; }
@@ -299,6 +307,26 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
   </button>
   <div class="hint">Нажмите в любом месте, чтобы закрыть</div>
 </div>
+
+<section class="sheet" id="fb" role="dialog" aria-modal="true" aria-labelledby="fb-title" hidden>
+  <div class="wrap">
+    <div class="grab" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 class="h2" id="fb-title">Предложить фразу</h2>
+      <button class="x" id="fb-close" type="button" aria-label="Закрыть">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form class="fb-form" id="fb-form" novalidate>
+      <label for="fb-text" class="fb-label">Какой фразы не хватило? Или что исправить?</label>
+      <textarea id="fb-text" maxlength="1000" rows="5" placeholder="Например: как попросить таксиста включить кондиционер"></textarea>
+      <div class="fb-ctx" id="fb-ctx" hidden></div>
+      <input type="text" id="fb-hp" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
+      <button class="btn main" type="submit" id="fb-send">Отправить</button>
+      <p class="fb-note">Мы не собираем имена, почты и другие личные данные. Сохраняется только текст сообщения и раздел, из которого вы его отправили.</p>
+    </form>
+  </div>
+</section>
 
 <div class="toast" id="toast" role="status" hidden></div>
 
@@ -486,7 +514,7 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
       h += '</div></div></li>';
     });
     h += '</ol><footer class="about"><p><b>Ачча!</b> — некоммерческий проект, который собирают энтузиасты. Фразы пока проверяются носителями языка.</p>';
-    h += '</footer></div>';
+    h += '<button class="link-btn" type="button" data-fb="1">Предложить фразу или исправление</button></footer></div>';
     return h;
   }
 
@@ -500,6 +528,7 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
     s.lines.forEach(function (l) { h += lineCard(l, { selfcheck: state.selfcheck }); });
     h += '</div>';
     var next = nextSituation();
+    h += '<div class="ask-more">Не нашли нужную фразу?<button class="link-btn" type="button" data-fb="1">Предложить фразу</button></div>';
     if (next) h += '<button class="sit" type="button" data-go="' + next.key + '"><span class="name">Дальше: ' + esc(next.name) + '</span>' + ICON.chev + '</button>';
     return h + '</div>';
   }
@@ -611,14 +640,56 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
   function closeSheet() { $('scrim').hidden = true; $('sheet').hidden = true; $('help-open').focus(); }
   $('help-open').addEventListener('click', openSheet);
   $('sheet-close').addEventListener('click', closeSheet);
-  $('scrim').addEventListener('click', closeSheet);
+  $('scrim').addEventListener('click', function () { if (!$('fb').hidden) closeFb(); else closeSheet(); });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
-    if (!$('show').hidden) closeShow(); else if (!$('sheet').hidden) closeSheet();
+    if (!$('show').hidden) closeShow(); else if (!$('fb').hidden) closeFb(); else if (!$('sheet').hidden) closeSheet();
   });
+
+  // ---------- feedback ----------
+  // Адрес веб-приложения Apps Script (Deploy → Web app). Пока пусто — сообщения копятся на телефоне.
+  var FEEDBACK_URL = '';
+  var FB_QUEUE = 'pb-fb-queue';
+  var fbContext = '';
+  function fbQueue() { try { return JSON.parse(localStorage.getItem(FB_QUEUE) || '[]') || []; } catch (e) { return []; } }
+  function fbSaveQueue(q) { try { localStorage.setItem(FB_QUEUE, JSON.stringify(q.slice(-20))); } catch (e) {} }
+  function fbPost(item) {
+    if (!FEEDBACK_URL) return Promise.reject(new Error('no endpoint'));
+    return fetch(FEEDBACK_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(item) });
+  }
+  function fbFlush() {
+    var q = fbQueue(); if (!q.length || !FEEDBACK_URL || !navigator.onLine) return;
+    var item = q[0];
+    fbPost(item).then(function () { var rest = fbQueue(); rest.shift(); fbSaveQueue(rest); fbFlush(); }).catch(function () {});
+  }
+  function openFb() {
+    fbContext = '';
+    if (state.view === 'sit' && !state.q.trim()) {
+      var st = route[state.stage], s = st && st.situations[state.sit];
+      if (s) fbContext = st.name + ' › ' + s.name;
+    }
+    $('fb-ctx').hidden = !fbContext; $('fb-ctx').textContent = fbContext ? 'Раздел: ' + fbContext : '';
+    $('scrim').hidden = false; $('fb').hidden = false; $('fb-text').focus();
+  }
+  function closeFb() { $('fb').hidden = true; if ($('sheet').hidden) $('scrim').hidden = true; }
+  $('fb-close').addEventListener('click', closeFb);
+  $('fb-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = $('fb-text').value.trim();
+    if ($('fb-hp').value) { closeFb(); return; }
+    if (text.length < 3) { toast('Напишите хотя бы пару слов'); $('fb-text').focus(); return; }
+    var item = { text: text.slice(0, 1000), context: fbContext, v: 1 };
+    var q = fbQueue(); q.push(item); fbSaveQueue(q);
+    $('fb-text').value = ''; closeFb();
+    if (navigator.onLine && FEEDBACK_URL) { fbFlush(); toast('Спасибо! Сообщение отправлено'); }
+    else toast('Спасибо! Отправим, когда появится интернет');
+  });
+  window.addEventListener('online', fbFlush);
+  setTimeout(fbFlush, 1500);
 
   // ---------- events ----------
   function onAct(e) {
+    if (e.target.closest('[data-fb]')) { openFb(); return; }
     var inst = e.target.closest('[data-install]');
     if (inst) { onInstall(inst.getAttribute('data-install')); return; }
     var go_ = e.target.closest('[data-go]');
