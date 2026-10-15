@@ -445,6 +445,9 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
   var AUDIO_RATE = 0.8;
   function speak(line) {
     try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {}
+    try { if (player) player.pause(); } catch (e) {}
+    // Фразы туриста — голосом телефона без акцента; записи (индийский голос) — только для реплик индийцев.
+    if (line.role !== 'local') { speakTTS(line); return; }
     try {
       if (!player) player = new Audio();
       player.pause();

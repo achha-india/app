@@ -1,6 +1,6 @@
 // Ачча — Service Worker: сохраняет приложение, фразы и шрифты на телефоне, чтобы всё работало без интернета.
 // При изменении файлов приложения увеличьте номер версии, чтобы телефоны скачали обновление.
-const VERSION = 'achha-v12';
+const VERSION = 'achha-v13';
 const APP_CACHE = VERSION + '-app';
 const FONT_CACHE = 'achha-fonts-v1';
 const FONT_CSS = 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Pliant:wght@500;700&display=swap';
@@ -24,7 +24,7 @@ async function cacheAudio(cache) {
     if (!res) return;
     const data = await res.clone().json();
     const ids = [];
-    (data.stages || []).forEach(s => (s.situations || []).forEach(sit => (sit.lines || []).forEach(l => l.id && ids.push(l.id))));
+    (data.stages || []).forEach(s => (s.situations || []).forEach(sit => (sit.lines || []).forEach(l => l.id && l.role === 'local' && ids.push(l.id))));
     await Promise.all(ids.map(id => {
       const u = './audio/' + id + '.mp3';
       return fetch(u, { cache: 'reload' }).then(r => r.ok && cache.put(u, r)).catch(() => {});
