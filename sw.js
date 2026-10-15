@@ -1,6 +1,6 @@
 // Ачча — Service Worker: сохраняет приложение, фразы и шрифты на телефоне, чтобы всё работало без интернета.
 // При изменении файлов приложения увеличьте номер версии, чтобы телефоны скачали обновление.
-const VERSION = 'achha-v6';
+const VERSION = 'achha-v7';
 const APP_CACHE = VERSION + '-app';
 const FONT_CACHE = 'achha-fonts-v1';
 const FONT_CSS = 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Pliant:wght@500;700&display=swap';
@@ -68,17 +68,24 @@ self.addEventListener('fetch', event => {
 
   if (url.origin !== self.location.origin) return;
 
-  // Приложение и фразы: сразу показываем сохранённую версию, а в фоне скачиваем свежую.
+  // Приложение и фразы: при наличии интернета берём свежую версию (ждём до 4 секунд),
+  // без сети или при медленной сети показываем сохранённую.
   event.respondWith((async () => {
     const cache = await caches.open(APP_CACHE);
     const key = req.mode === 'navigate' ? './index.html' : req;
-    const hit = await cache.match(key, { ignoreSearch: true });
-    const fresh = fetch(req).then(res => {
+    const network = fetch(req).then(res => {
       if (res.ok) cache.put(key, res.clone());
       return res;
-    }).catch(() => null);
-    if (hit) { event.waitUntil(fresh); return hit; }
-    const res = await fresh;
-    return res || new Response('Нет соединения', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+    });
+    const timeout = new Promise(resolve => setTimeout(resolve, 4000, null));
+    try {
+      const res = await Promise.race([network, timeout]);
+      if (res) return res;
+    } catch (e) { /* нет сети */ }
+    const hit = await cache.match(key, { ignoreSearch: true });
+    if (hit) { event.waitUntil(network.catch(() => {})); return hit; }
+    try { return await network; } catch (e) {
+      return new Response('Нет соединения', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+    }
   })());
 });
