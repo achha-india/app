@@ -20,7 +20,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-02",
@@ -33,7 +33,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-03",
@@ -46,7 +46,7 @@
               "note": "Распечатку визы лучше иметь с собой на бумаге.",
               "level": "A2",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-04",
@@ -59,7 +59,7 @@
               "note": null,
               "level": "A2",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-05",
@@ -72,7 +72,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-06",
@@ -85,7 +85,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-07",
@@ -98,7 +98,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-08",
@@ -111,7 +111,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-09",
@@ -124,7 +124,7 @@
               "note": "Адрес отеля лучше держать в телефоне и на бумаге.",
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-10",
@@ -137,7 +137,7 @@
               "note": "На контроле могут сфотографировать и снять отпечатки пальцев.",
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             }
           ]
         },
@@ -155,7 +155,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-12",
@@ -168,7 +168,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-13",
@@ -181,7 +181,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "air-14",
@@ -194,7 +194,7 @@
               "note": "В индийском английском часто говорят fill the form вместо fill in the form.",
               "level": "A2",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             }
           ]
         }
@@ -217,7 +217,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-02",
@@ -225,12 +225,12 @@
               "role": "local",
               "replyTo": "road-01",
               "en": "Prepaid taxi counter is there, sir.",
-              "read": "припэ́йд тэ́кси ка́унтэр из зэр, сёр",
+              "read": "припэ́йд тэ́кси ка́унтэр из зэр, сэр",
               "ru": "Стойка предоплаченного такси вон там.",
               "note": "Sir и madam здесь обычная вежливость. В аэропортах Гоа есть стойки такси с фиксированной ценой.",
               "level": "A2",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-03",
@@ -243,7 +243,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-04",
@@ -256,7 +256,7 @@
               "note": "Цены часто называют сотнями: fifteen hundred значит 1500.",
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-05",
@@ -269,7 +269,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-06",
@@ -282,7 +282,7 @@
               "note": "Квиток отдают водителю в конце поездки.",
               "level": "A2",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             }
           ]
         },
@@ -300,7 +300,7 @@
               "note": "О цене договаривайтесь до посадки.",
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-08",
@@ -313,7 +313,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-09",
@@ -326,7 +326,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-10",
@@ -339,7 +339,7 @@
               "note": "Last price значит окончательная цена, но торг часто продолжается.",
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-11",
@@ -352,7 +352,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             }
           ]
         },
@@ -370,7 +370,7 @@
               "note": "Which side в индийском английском значит куда ехать.",
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-14",
@@ -383,7 +383,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-15",
@@ -396,7 +396,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-16",
@@ -409,7 +409,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-17",
@@ -422,7 +422,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "road-18",
@@ -435,7 +435,7 @@
               "note": "One minute и I am coming не означают точное время, ждать можно дольше.",
               "level": "A2",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             }
           ]
         }
@@ -458,7 +458,7 @@
               "note": "Первую цену обычно завышают.",
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-02",
@@ -471,7 +471,7 @@
               "note": "Only здесь не значит всего, это просто усиление.",
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-03",
@@ -484,7 +484,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-04",
@@ -497,7 +497,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-05",
@@ -510,20 +510,20 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-06",
               "order": 6,
               "role": "local",
               "replyTo": "market-05",
-              "en": "No profit, madam! Ok, ok, take it.",
-              "read": "ноу про́фит, мэ́дэм! окэ́й, окэ́й, тэйк ит",
-              "ru": "Мне без прибыли, мадам! Ладно, берите.",
-              "note": "No profit обычно часть торга, всерьёз воспринимать не нужно.",
+              "en": "Ok, ok, take it.",
+              "read": "окэ́й, окэ́й, тэйк ит",
+              "ru": "Ладно, берите.",
+              "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-07",
@@ -536,7 +536,7 @@
               "note": "Если отойти, цену часто снижают.",
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-08",
@@ -549,7 +549,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             }
           ]
         },
@@ -567,7 +567,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-10",
@@ -580,7 +580,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-11",
@@ -593,7 +593,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-12",
@@ -606,7 +606,7 @@
               "note": "Free size значит один универсальный размер.",
               "level": "A2",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-13",
@@ -619,7 +619,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             }
           ]
         },
@@ -637,20 +637,20 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-15",
               "order": 2,
               "role": "local",
               "replyTo": "market-14",
-              "en": "Only cash or UPI.",
-              "read": "о́нли кэш ор ю-пи-а́й",
-              "ru": "Только наличные или UPI.",
-              "note": "UPI это индийская система оплаты по QR-коду. Для иностранцев есть отдельные приложения, уточните заранее.",
+              "en": "Only cash.",
+              "read": "о́нли кэш.",
+              "ru": "Только наличные.",
+              "note": null,
               "level": "A1",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-16",
@@ -663,20 +663,20 @@
               "note": "Change значит и сдача, и мелочь.",
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-17",
               "order": 4,
               "role": "local",
               "replyTo": "market-16",
-              "en": "No problem, I will adjust.",
-              "read": "ноу про́блэм, ай уил эджа́ст",
-              "ru": "Ничего страшного, я округлю.",
-              "note": "Adjust в индийском английском значит подстроиться, уступить.",
+              "en": "No problem, sir.",
+              "read": "ноу про́блэм, сэр",
+              "ru": "Ничего страшного, сэр",
+              "note": null,
               "level": "A2",
               "voice": "en-IN",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "market-18",
@@ -689,7 +689,7 @@
               "note": "Пластиковые пакеты часто запрещены, лучше взять свою сумку.",
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             }
           ]
         }
@@ -712,7 +712,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "help-02",
@@ -725,7 +725,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "help-03",
@@ -738,7 +738,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "help-04",
@@ -751,7 +751,7 @@
               "note": "Можно протянуть телефон с открытой заметкой.",
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "help-05",
@@ -764,7 +764,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "help-06",
@@ -777,7 +777,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "help-07",
@@ -790,7 +790,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             },
             {
               "id": "help-08",
@@ -803,7 +803,7 @@
               "note": null,
               "level": "A1",
               "voice": "en-US",
-              "status": "Черновик"
+              "status": "Проверено"
             }
           ]
         }
