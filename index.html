@@ -39,6 +39,10 @@ img { max-width: 100%; }
   --local-bg: #DCE8F1;    /* sky tint: replies of Indians */
   --local-line: #9ABED8;  /* sky */
   --note: #7A4612;        /* copper, darkened */
+  --chip: #EAE4D6;        /* button fill on light cards */
+  --chip-local: #C8DBE9;  /* button fill on sky bubbles */
+  --logo-bg: #613115;
+  --logo-fg: #DDD8CA;
   --shadow: 0 1px 2px rgba(97,49,21,.08), 0 4px 14px rgba(97,49,21,.08);
   --font-display: "Pliant", "Manrope", system-ui, sans-serif;
   --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -49,14 +53,14 @@ img { max-width: 100%; }
   :root:not([data-theme="light"]) {
     --bg: #1C120B; --surface: #2A1C12; --ink: #EDE8DC; --muted: #B8A688; --line: #43301F; --rail: #7A6748;
     --primary: #9ABED8; --primary-soft: #22313A; --accent: #C67F2F; --accent-ink: #1E0F05;
-    --read: #9ABED8; --local-bg: #1E2A31; --local-line: #35505F; --note: #E3B57A;
+    --read: #9ABED8; --local-bg: #1E2A31; --local-line: #35505F; --note: #E3B57A; --chip: #3A2A1D; --chip-local: #2A3B45;
     --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #1C120B; --surface: #2A1C12; --ink: #EDE8DC; --muted: #B8A688; --line: #43301F; --rail: #7A6748;
   --primary: #9ABED8; --primary-soft: #22313A; --accent: #C67F2F; --accent-ink: #1E0F05;
-  --read: #9ABED8; --local-bg: #1E2A31; --local-line: #35505F; --note: #E3B57A;
+  --read: #9ABED8; --local-bg: #1E2A31; --local-line: #35505F; --note: #E3B57A; --chip: #3A2A1D; --chip-local: #2A3B45;
   --shadow: 0 1px 2px rgba(0,0,0,.35); color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -82,10 +86,11 @@ header.top {
 header.top .wrap { padding-block: 10px; display: flex; flex-direction: column; gap: 10px; }
 .brand { display: flex; align-items: center; gap: 10px; min-height: 36px; }
 .brand h1 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1.1; margin: 0; color: var(--primary); }
-.brand .rupee { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); font-weight: 700; flex: none; }
+.brand .logo { position: relative; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--logo-bg); color: var(--logo-fg); font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1; flex: none; }
+.brand .logo::after { content: ""; position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 .back { display: none; align-items: center; gap: 4px; border: 0; background: none; padding: 6px 8px 6px 0; color: var(--primary); font-weight: 600; cursor: pointer; }
 body.sub .back { display: inline-flex; }
-body.sub .brand .rupee, body.sub .brand-name { display: none; }
+body.sub .brand .logo, body.sub .brand-name { display: none; }
 .brand-name { display: flex; align-items: baseline; gap: 8px; min-width: 0; flex-wrap: wrap; }
 .brand-name .tag { font-size: 13px; color: var(--muted); }
 .crumb { font-size: 13px; color: var(--muted); margin-left: auto; text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -155,13 +160,14 @@ main { padding-block: 18px calc(var(--bar-h) + 28px + env(safe-area-inset-bottom
 .ru { font-size: 15px; color: var(--muted); }
 .note { font-size: 14px; color: var(--note); display: flex; gap: 6px; margin-top: 2px; }
 .note svg { flex: none; margin-top: 2px; }
-.acts { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.acts { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
 .act {
-  display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px;
-  border-radius: 10px; border: 1px solid var(--line); background: transparent; cursor: pointer; font-size: 14px; font-weight: 500;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 44px; min-width: 44px; padding: 0 16px;
+  border-radius: 12px; border: 0; background: var(--chip); color: var(--ink); cursor: pointer; font-size: 15px; font-weight: 600;
 }
-.line.local .act { border-color: var(--local-line); }
-.act.icon { width: 36px; padding: 0; justify-content: center; }
+.line.local .act { background: var(--chip-local); }
+.act.icon { width: 44px; padding: 0; }
+.act:active { transform: scale(.97); }
 .act.on { color: var(--accent); }
 .act.on svg { fill: currentColor; }
 .act.primary { background: var(--primary); color: var(--bg); border-color: var(--primary); }
@@ -219,6 +225,15 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
   background: var(--ink); color: var(--bg); border-radius: 12px; padding: 10px 14px; font-size: 14px; max-width: calc(100% - 32px);
 }
 .intro { display: flex; flex-direction: column; gap: 8px; }
+.install { background: var(--surface); border: 1.5px solid var(--accent); border-radius: var(--r); padding: 14px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow); }
+.install-text { display: flex; flex-direction: column; gap: 4px; }
+.install-text b { font-size: 16px; color: var(--ink); }
+.install-text span { font-size: 14px; color: var(--muted); }
+.install-text svg { vertical-align: -3px; }
+.install-acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { height: 44px; padding: 0 18px; border-radius: 12px; border: 0; font-weight: 600; font-size: 15px; cursor: pointer; }
+.btn.main { background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { background: var(--chip); color: var(--ink); }
 .intro .lead b { color: var(--ink); font-weight: 600; }
 .about { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
 .about p { margin: 0; }
@@ -230,7 +245,7 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
 <header class="top">
   <div class="wrap">
     <div class="brand">
-      <span class="rupee" aria-hidden="true">₹</span>
+      <span class="logo" aria-hidden="true">А</span>
       <div class="brand-name"><h1>Ачча!</h1><span class="tag">разговорник для Индии</span></div>
       <button class="back" id="back" type="button" aria-label="Назад">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -311,6 +326,7 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
     show: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
     star: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg>',
     info: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg>',
+    share: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 00-1 1v8a1 1 0 001 1h14a1 1 0 001-1v-8a1 1 0 00-1-1h-1"/></svg>',
     chev: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>'
   };
 
@@ -387,18 +403,61 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
       if (l.note) h += '<div class="note">' + ICON.info + '<span>' + esc(l.note) + '</span></div>';
       if (opts.ctx) h += '<div class="result-ctx">' + opts.ctx + '</div>';
       h += '<div class="acts">';
-      h += '<button class="act" type="button" data-act="speak">' + ICON.speak + 'Озвучить</button>';
-      if (me) h += '<button class="act" type="button" data-act="show">' + ICON.show + 'Показать</button>';
+      h += '<button class="act icon" type="button" data-act="speak" aria-label="Озвучить">' + ICON.speak.replace(/18/g, '22') + '</button>';
+      if (me) h += '<button class="act" type="button" data-act="show">' + ICON.show.replace(/18/g, '20') + 'Показать</button>';
       var on = isFav(l.id);
-      h += '<button class="act icon' + (on ? ' on' : '') + '" type="button" data-act="fav" aria-pressed="' + on + '" aria-label="' + (on ? 'Убрать из моих фраз' : 'Добавить в мои фразы') + '">' + ICON.star + '</button>';
+      h += '<button class="act icon' + (on ? ' on' : '') + '" type="button" data-act="fav" aria-pressed="' + on + '" aria-label="' + (on ? 'Убрать из моих фраз' : 'Добавить в мои фразы') + '">' + ICON.star.replace(/18/g, '22') + '</button>';
       h += '</div>';
     }
     return h + '</article>';
   }
 
+  // ---------- install to home screen ----------
+  var INSTALL_KEY = 'pb-install-hidden-until';
+  var deferredPrompt = null;
+  function isStandalone() {
+    try { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; } catch (e) { return false; }
+  }
+  function isIOS() {
+    var ua = navigator.userAgent || '';
+    return /iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
+  }
+  function installHidden() {
+    try { return Date.now() < Number(localStorage.getItem(INSTALL_KEY) || 0); } catch (e) { return false; }
+  }
+  function installBanner() {
+    if (isStandalone() || installHidden()) return '';
+    var why = 'Так приложение будет открываться в одно касание и работать без интернета.';
+    var how, main = '';
+    if (deferredPrompt) {
+      how = why;
+      main = '<button class="btn main" type="button" data-install="go">Установить</button>';
+    } else if (isIOS()) {
+      how = why + ' В Safari нажмите «Поделиться» ' + ICON.share + ' и выберите «На экран „Домой“».';
+    } else {
+      how = why + ' Откройте меню браузера (⋮) и выберите «Добавить на главный экран».';
+    }
+    return '<section class="install" aria-label="Установка"><div class="install-text"><b>Установите на главный экран</b><span>' + how + '</span></div>' +
+      '<div class="install-acts">' + main + '<button class="btn ghost" type="button" data-install="later">Позже</button></div></section>';
+  }
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault(); deferredPrompt = e;
+    if (state.view === 'route' && !state.q.trim()) render(false);
+  });
+  window.addEventListener('appinstalled', function () { deferredPrompt = null; render(false); });
+  function onInstall(kind) {
+    if (kind === 'go' && deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.finally(function () { deferredPrompt = null; render(false); });
+      return;
+    }
+    try { localStorage.setItem(INSTALL_KEY, String(Date.now() + 7 * 24 * 3600 * 1000)); } catch (e) {}
+    render(false);
+  }
+
   // ---------- views ----------
   function viewRoute() {
-    var h = '<div class="view"><div class="intro"><p class="lead"><b>Карманный разговорник для поездки в Индию.</b> Здесь есть не только то, что сказать, но и то, что вам ответят: индийский английский поначалу бывает непривычным.</p>';
+    var h = '<div class="view">' + installBanner() + '<div class="intro"><p class="lead"><b>Карманный разговорник для поездки в Индию.</b> Здесь есть не только то, что сказать, но и то, что вам ответят: индийский английский поначалу бывает непривычным.</p>';
     h += '<p class="lead">Пройдите маршрут дома, чтобы выучить фразы заранее. В поездке откройте нужную ситуацию или найдите фразу поиском. Приложение работает без интернета.</p></div>';
     h += '<ol class="route">';
     route.forEach(function (st, si) {
@@ -544,6 +603,8 @@ nav.bar .wrap { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 8px; 
 
   // ---------- events ----------
   function onAct(e) {
+    var inst = e.target.closest('[data-install]');
+    if (inst) { onInstall(inst.getAttribute('data-install')); return; }
     var go_ = e.target.closest('[data-go]');
     if (go_) { if (!$('sheet').hidden) closeSheet(); go('s-' + go_.getAttribute('data-go')); return; }
     var b = e.target.closest('[data-act]'); if (!b) return;
